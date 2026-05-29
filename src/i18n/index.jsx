@@ -1,23 +1,17 @@
-// src/i18n/index.jsx
 import { createContext, useContext, useState, useEffect } from 'react'
-import fr from './fr'
 import en from './en'
-import es from './es'
 
-const translations = { fr, en, es }
 export const LangContext = createContext(null)
 
 export function LangProvider({ children }) {
-  const [lang, setLang] = useState('en')
-  const [dark, setDark] = useState(true)
+  const [dark, setDark] = useState(false)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
   }, [dark])
 
-  const t = translations[lang]
   return (
-    <LangContext.Provider value={{ lang, setLang, t, dark, setDark }}>
+    <LangContext.Provider value={{ t: en, dark, setDark }}>
       {children}
     </LangContext.Provider>
   )

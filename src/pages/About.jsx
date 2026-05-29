@@ -1,12 +1,49 @@
-// src/pages/About.jsx
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from '../i18n/index.jsx'
 
-const SL = ({ children }) => (
-  <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'14px' }}>
-    <div style={{ width:'28px', height:'1px', background:'var(--gold)' }}/>
-    <span style={{ fontSize:'11px', letterSpacing:'3px', textTransform:'uppercase', color:'var(--gold)', fontWeight:500 }}>{children}</span>
+function useReveal(threshold = 0.12) {
+  const ref = useRef(null)
+  const [on, setOn] = useState(false)
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setOn(true); obs.disconnect() } },
+      { threshold }
+    )
+    if (ref.current) obs.observe(ref.current)
+    return () => obs.disconnect()
+  }, [])
+  return [ref, on]
+}
+
+const Reveal = ({ children, delay = 0, x = 0, y = 24 }) => {
+  const [ref, on] = useReveal()
+  return (
+    <div ref={ref} style={{
+      opacity: on ? 1 : 0,
+      transform: on ? 'none' : `translate(${x}px,${y}px)`,
+      transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
+    }}>{children}</div>
+  )
+}
+
+const OL = ({ children }) => (
+  <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'16px' }}>
+    <div style={{ width:'28px', height:'1px', background:'var(--accent)' }}/>
+    <span style={{ fontSize:'11px', letterSpacing:'3px', textTransform:'uppercase', color:'var(--accent)', fontWeight:600 }}>{children}</span>
   </div>
+)
+
+const ArrowRight = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+  </svg>
+)
+
+const CheckIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
 )
 
 export default function About() {
@@ -16,214 +53,233 @@ export default function About() {
   const a = t.about
 
   return (
-    <div style={{ background:'var(--bg-primary)', minHeight:'100vh' }}>
+    <div style={{ background:'var(--bg-primary)' }}>
 
-      {/* ── HERO ── */}
-      <section style={{ background:'var(--bg-secondary)', borderBottom:'1px solid var(--border-gold)', padding:'80px 48px 72px', position:'relative', overflow:'hidden' }}>
-        <div style={{ position:'absolute', inset:0, pointerEvents:'none', backgroundImage:'linear-gradient(var(--hero-grid) 1px,transparent 1px),linear-gradient(90deg,var(--hero-grid) 1px,transparent 1px)', backgroundSize:'48px 48px' }}/>
-        <div style={{ position:'absolute', right:0, top:0, width:'400px', height:'400px', background:'radial-gradient(circle,var(--gold-bg) 0%,transparent 70%)', pointerEvents:'none' }}/>
-        <div style={{ maxWidth:'1140px', margin:'0 auto', position:'relative', zIndex:1, display:'grid', gridTemplateColumns:'1fr 1fr', gap:'64px', alignItems:'center' }}>
-          <div>
-            <SL>{a.label}</SL>
-            <h1 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'clamp(40px,5vw,62px)', fontWeight:300, color:'var(--text-primary)', lineHeight:1.08 }}>
-              <strong style={{ fontWeight:700 }}>{a.h1}</strong><br/>{a.h2}
+      {/* PAGE HEADER */}
+      <section style={{ background:'var(--bg-secondary)', borderBottom:'1px solid var(--border)', padding:'72px 48px 64px', position:'relative', overflow:'hidden' }}>
+        <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px)', backgroundSize:'72px 72px', pointerEvents:'none' }}/>
+        <div style={{ position:'absolute', top:'-20%', right:'-10%', width:'600px', height:'600px', borderRadius:'50%', background:'radial-gradient(circle,var(--glow) 0%,transparent 65%)', pointerEvents:'none' }}/>
+        <div style={{ maxWidth:'1200px', margin:'0 auto', position:'relative', zIndex:1 }}>
+          <div style={{ animation:'fadeUp 0.75s ease both' }}>
+            <OL>{a.label}</OL>
+            <h1 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'clamp(38px,5vw,62px)', fontWeight:700, color:'var(--text-primary)', lineHeight:1.08, maxWidth:'640px', marginBottom:'18px' }}>
+              {a.h1} {a.h2}
             </h1>
-            <p style={{ fontSize:'16px', color:'var(--text-secondary)', marginTop:'18px', lineHeight:1.85, fontWeight:300 }}>{a.desc}</p>
-            <button onClick={() => navigate('/contact')}
-              style={{ marginTop:'32px', background:'var(--gold)', color:'#070E1A', padding:'13px 32px', borderRadius:'9px', fontWeight:700, fontSize:'14px', border:'none', cursor:'pointer', fontFamily:'Outfit,sans-serif', transition:'all 0.2s' }}
-              onMouseEnter={e => { e.currentTarget.style.background='var(--gold-light)'; e.currentTarget.style.transform='translateY(-2px)' }}
-              onMouseLeave={e => { e.currentTarget.style.background='var(--gold)'; e.currentTarget.style.transform='none' }}
-            >
-              Travailler avec nous
-            </button>
+            <p style={{ fontSize:'16px', color:'var(--text-secondary)', maxWidth:'560px', lineHeight:1.85, fontWeight:300 }}>{a.desc}</p>
           </div>
-          {/* Stats panel */}
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px' }}>
+
+          {/* Stats row */}
+          <div style={{ display:'flex', gap:'48px', marginTop:'48px', paddingTop:'36px', borderTop:'1px solid var(--border)', flexWrap:'wrap' }}>
             {[
-              { val:'4+', label:'Activités Clés', icon:'⚡' },
-              { val:'4', label:'Continents', icon:'🌍' },
-              { val:'6+', label:'Produits Phares', icon:'📦' },
-              { val:'100%', label:'Engagement Qualité', icon:'✅' },
-            ].map((st,i) => (
-              <div key={i} style={{ background:'var(--bg-card)', border:'1px solid var(--border-gold)', borderRadius:'14px', padding:'24px 20px', textAlign:'center' }}>
-                <div style={{ fontSize:'24px', marginBottom:'10px' }}>{st.icon}</div>
-                <div style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'32px', fontWeight:700, color:'var(--gold)', lineHeight:1 }}>{st.val}</div>
-                <div style={{ fontSize:'11px', letterSpacing:'1.5px', textTransform:'uppercase', color:'var(--text-muted)', marginTop:'6px' }}>{st.label}</div>
+              { val:'2020', label:'Founded' },
+              { val:'4+',   label:'Core Activities' },
+              { val:'50+',  label:'Countries' },
+              { val:'6+',   label:'Product Lines' },
+            ].map((s,i) => (
+              <div key={i}>
+                <div style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'32px', fontWeight:700, color:'var(--text-primary)', lineHeight:1 }}>{s.val}</div>
+                <div style={{ fontSize:'11px', letterSpacing:'1.5px', textTransform:'uppercase', color:'var(--text-muted)', marginTop:'5px', fontWeight:400 }}>{s.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── QUI SOMMES NOUS ── */}
-      <section style={{ padding:'80px 48px', background:'var(--bg-primary)' }}>
-        <div style={{ maxWidth:'1140px', margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'48px', alignItems:'start' }}>
-          <div>
-            <SL>Notre Histoire</SL>
-            <h2 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'40px', fontWeight:700, color:'var(--text-primary)', marginBottom:'20px', lineHeight:1.15 }}>{a.aboutTitle}</h2>
-            <p style={{ fontSize:'15px', color:'var(--text-secondary)', lineHeight:1.9, fontWeight:300, marginBottom:'20px' }}>{a.aboutText}</p>
-            <p style={{ fontSize:'15px', color:'var(--text-secondary)', lineHeight:1.9, fontWeight:300, marginBottom:'32px' }}>
-              Avec un réseau solide de fournisseurs et de partenaires internationaux, nous opérons dans plusieurs secteurs stratégiques avec professionnalisme, efficacité et intégrité — connectant les marchés africains aux opportunités mondiales.
-            </p>
-            {/* Activités */}
-            <div style={{ display:'grid', gap:'10px' }}>
+      {/* WHO WE ARE */}
+      <section style={{ padding:'88px 48px', background:'var(--bg-primary)', borderBottom:'1px solid var(--border)' }}>
+        <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+          <Reveal>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'72px', alignItems:'center' }}>
+              <div>
+                <img
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=700&q=80"
+                  alt="IMEX HOLDING team"
+                  style={{ width:'100%', height:'400px', objectFit:'cover', borderRadius:'12px', display:'block', border:'1px solid var(--border)' }}
+                />
+              </div>
+              <div>
+                <OL>Our Story</OL>
+                <h2 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'42px', fontWeight:700, color:'var(--text-primary)', lineHeight:1.1, marginBottom:'20px' }}>
+                  {a.aboutTitle}
+                </h2>
+                <p style={{ fontSize:'15.5px', color:'var(--text-secondary)', lineHeight:1.9, fontWeight:300, marginBottom:'20px' }}>
+                  {a.aboutText}
+                </p>
+                <p style={{ fontSize:'15px', color:'var(--text-secondary)', lineHeight:1.9, fontWeight:300, marginBottom:'28px' }}>
+                  With a strong network of suppliers and partners across Africa, Europe, Asia and the Middle East, we operate with professionalism, efficiency, and integrity in every transaction.
+                </p>
+                <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
+                  {['Import & Export', 'General Trading', 'Brand Representation', 'Transport & Logistics'].map((v,i) => (
+                    <div key={i} style={{ display:'flex', alignItems:'center', gap:'10px', fontSize:'14px', color:'var(--text-secondary)', fontWeight:400 }}>
+                      <div style={{ color:'var(--accent)', flexShrink:0 }}><CheckIcon/></div>
+                      {v}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* MISSION & VISION */}
+      <section style={{ padding:'88px 48px', background:'var(--bg-secondary)', borderBottom:'1px solid var(--border)' }}>
+        <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+          <Reveal>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'24px', marginBottom:'24px' }}>
               {[
-                { icon:'🔄', label:'Import & Export' },
-                { icon:'🛒', label:'Commerce Général' },
-                { icon:'🏷️', label:'Représentation de Marques' },
-                { icon:'🚛', label:'Transport & Logistique' },
-              ].map((act,i) => (
-                <div key={i} style={{ display:'flex', alignItems:'center', gap:'14px', padding:'13px 18px', background:'var(--bg-secondary)', border:'1px solid var(--border)', borderRadius:'10px' }}>
-                  <span style={{ fontSize:'20px' }}>{act.icon}</span>
-                  <span style={{ fontSize:'14.5px', color:'var(--text-primary)', fontWeight:400 }}>{act.label}</span>
-                  <span style={{ marginLeft:'auto', color:'var(--gold)', fontSize:'12px' }}>→</span>
+                { label:a.missionLabel, title:a.missionTitle, text:a.missionText },
+                { label:a.visionLabel,  title:a.visionTitle,  text:a.visionText  },
+              ].map((item,i) => (
+                <div key={i} style={{ background:'var(--bg-primary)', border:'1px solid var(--border)', borderRadius:'10px', padding:'40px', position:'relative', overflow:'hidden' }}>
+                  <div style={{ position:'absolute', top:0, left:0, width:'3px', height:'100%', background:'var(--gradient-btn)' }}/>
+                  <div style={{ fontSize:'11px', letterSpacing:'2.5px', textTransform:'uppercase', color:'var(--accent)', marginBottom:'12px', fontWeight:600 }}>{item.label}</div>
+                  <h3 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'28px', fontWeight:700, color:'var(--text-primary)', marginBottom:'14px', lineHeight:1.2 }}>{item.title}</h3>
+                  <p style={{ fontSize:'14.5px', color:'var(--text-secondary)', lineHeight:1.85, fontWeight:300 }}>{item.text}</p>
                 </div>
               ))}
             </div>
-          </div>
+          </Reveal>
 
-          <div style={{ display:'grid', gap:'20px' }}>
-            {/* Mission */}
-            <div style={{ background:'var(--bg-secondary)', border:'1px solid var(--border-gold)', borderRadius:'16px', padding:'32px' }}>
-              <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'16px' }}>
-                <div style={{ width:'44px', height:'44px', borderRadius:'10px', background:'var(--gold-bg)', border:'1px solid var(--border-gold)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'20px' }}>🎯</div>
-                <div>
-                  <div style={{ fontSize:'11px', letterSpacing:'2px', textTransform:'uppercase', color:'var(--gold)', marginBottom:'2px' }}>{a.missionLabel}</div>
-                  <h3 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'20px', fontWeight:700, color:'var(--text-primary)' }}>{a.missionTitle}</h3>
+          {/* About image */}
+          <Reveal delay={100}>
+            <div style={{ position:'relative', borderRadius:'12px', overflow:'hidden', border:'1px solid var(--border)' }}>
+              <img
+                src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80"
+                alt="International business operations"
+                style={{ width:'100%', height:'300px', objectFit:'cover', display:'block' }}
+              />
+              <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top,rgba(4,8,15,0.65) 0%,transparent 50%)' }}/>
+              <div style={{ position:'absolute', bottom:'28px', left:'32px', right:'32px', display:'flex', justifyContent:'space-between', alignItems:'flex-end' }}>
+                <div style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'22px', fontWeight:700, color:'#fff', maxWidth:'400px', lineHeight:1.3 }}>
+                  To become a leading African company in international trade, logistics, and commodity business.
                 </div>
+                <div style={{ fontSize:'11px', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(255,255,255,0.6)', textAlign:'right' }}>Our Vision</div>
               </div>
-              <p style={{ fontSize:'14px', color:'var(--text-secondary)', lineHeight:1.8, fontWeight:300 }}>{a.missionText}</p>
             </div>
+          </Reveal>
+        </div>
+      </section>
 
-            {/* Vision */}
-            <div style={{ background:'var(--bg-secondary)', border:'1px solid var(--border)', borderRadius:'16px', padding:'32px' }}>
-              <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'16px' }}>
-                <div style={{ width:'44px', height:'44px', borderRadius:'10px', background:'var(--gold-bg)', border:'1px solid var(--border-gold)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'20px' }}>🔭</div>
-                <div>
-                  <div style={{ fontSize:'11px', letterSpacing:'2px', textTransform:'uppercase', color:'var(--gold)', marginBottom:'2px' }}>{a.visionLabel}</div>
-                  <h3 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'20px', fontWeight:700, color:'var(--text-primary)' }}>{a.visionTitle}</h3>
-                </div>
+      {/* VALUES */}
+      <section style={{ padding:'88px 48px', background:'var(--bg-primary)', borderBottom:'1px solid var(--border)' }}>
+        <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+          <Reveal>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 2fr', gap:'64px', alignItems:'flex-start' }}>
+              <div>
+                <OL>{a.valuesLabel}</OL>
+                <h2 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'42px', fontWeight:700, color:'var(--text-primary)', lineHeight:1.1, marginBottom:'16px' }}>
+                  {a.valuesTitle}
+                </h2>
+                <p style={{ fontSize:'15px', color:'var(--text-secondary)', lineHeight:1.8, fontWeight:300 }}>
+                  {a.valuesText}
+                </p>
               </div>
-              <p style={{ fontSize:'14px', color:'var(--text-secondary)', lineHeight:1.8, fontWeight:300 }}>{a.visionText}</p>
-            </div>
-
-            {/* Régions */}
-            <div style={{ background:'var(--bg-secondary)', border:'1px solid var(--border)', borderRadius:'16px', padding:'28px' }}>
-              <div style={{ fontSize:'11px', letterSpacing:'2px', textTransform:'uppercase', color:'var(--text-muted)', marginBottom:'14px' }}>{a.serveLabel}</div>
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'10px' }}>
-                {a.regions.map(r => (
-                  <div key={r} style={{ display:'flex', alignItems:'center', gap:'8px', padding:'10px 14px', background:'var(--bg-card)', border:'1px solid var(--border-gold)', borderRadius:'9px' }}>
-                    <span style={{ width:'6px', height:'6px', background:'var(--gold)', borderRadius:'50%', flexShrink:0, display:'block' }}/>
-                    <span style={{ fontSize:'13.5px', color:'var(--text-primary)', fontWeight:400 }}>{r}</span>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:'12px' }}>
+                {a.values.map((v,i) => (
+                  <div key={i}
+                    style={{ padding:'24px 20px', background:'var(--bg-secondary)', border:'1px solid var(--border)', borderRadius:'9px', transition:'all 0.22s' }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.transform='translateY(-3px)' }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.transform='none' }}
+                  >
+                    <div style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'11px', color:'var(--text-muted)', letterSpacing:'2px', marginBottom:'10px', fontWeight:500, textTransform:'uppercase' }}>
+                      {String(i+1).padStart(2,'0')}
+                    </div>
+                    <div style={{ fontSize:'14px', fontWeight:600, color:'var(--text-primary)' }}>{v}</div>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* ── VALEURS ── */}
-      <section style={{ padding:'0 48px 80px', background:'var(--bg-primary)' }}>
-        <div style={{ maxWidth:'1140px', margin:'0 auto' }}>
-          <div style={{ background:'var(--bg-secondary)', border:'1px solid var(--border-gold)', borderRadius:'20px', padding:'56px' }}>
-            <div style={{ textAlign:'center', marginBottom:'48px' }}>
-              <SL>{a.valuesLabel}</SL>
-              <h2 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'40px', fontWeight:700, color:'var(--text-primary)', marginBottom:'14px' }}>{a.valuesTitle}</h2>
-              <p style={{ fontSize:'15px', color:'var(--text-secondary)', maxWidth:'520px', margin:'0 auto', lineHeight:1.8, fontWeight:300 }}>{a.valuesText}</p>
+      {/* WHY CHOOSE US */}
+      <section style={{ padding:'88px 48px', background:'var(--bg-secondary)', borderBottom:'1px solid var(--border)' }}>
+        <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+          <Reveal>
+            <div style={{ marginBottom:'52px' }}>
+              <OL>{a.whyLabel}</OL>
+              <h2 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'44px', fontWeight:700, color:'var(--text-primary)', lineHeight:1.1 }}>{a.whyTitle}</h2>
             </div>
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'20px' }}>
-              {a.values.map((v,i) => {
-                const icons = ['⭐','🤝','🔒','💡','👥','🏆']
-                const descs = [
-                  'Nous maintenons les plus hauts standards dans chaque opération.',
-                  'Honnêteté et transparence dans toutes nos relations.',
-                  'Vous pouvez compter sur nous à chaque étape.',
-                  'Nous cherchons toujours à faire mieux.',
-                  'Votre réussite est notre priorité absolue.',
-                  'Nous visons l\'excellence dans tout ce que nous faisons.',
-                ]
-                return (
-                  <div key={i} style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:'14px', padding:'28px', transition:'all 0.2s' }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor='var(--border-gold)'; e.currentTarget.style.background='var(--bg-card-hover)' }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.background='var(--bg-card)' }}
-                  >
-                    <div style={{ fontSize:'28px', marginBottom:'14px' }}>{icons[i]}</div>
-                    <h3 style={{ fontSize:'16px', fontWeight:600, color:'var(--text-primary)', marginBottom:'8px' }}>{v}</h3>
-                    <p style={{ fontSize:'13px', color:'var(--text-secondary)', lineHeight:1.7, fontWeight:300 }}>{descs[i]}</p>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHY US ── */}
-      <section style={{ padding:'0 48px 80px', background:'var(--bg-primary)' }}>
-        <div style={{ maxWidth:'1140px', margin:'0 auto' }}>
-          <SL>{a.whyLabel}</SL>
-          <h2 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'40px', fontWeight:700, color:'var(--text-primary)', marginBottom:'40px' }}>{a.whyTitle}</h2>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'20px' }}>
+          </Reveal>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'14px' }}>
             {a.why.map((w,i) => (
-              <div key={i} style={{ background:'var(--bg-secondary)', border:'1px solid var(--border)', borderRadius:'14px', padding:'30px', transition:'all 0.25s' }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor='var(--border-gold)'; e.currentTarget.style.transform='translateY(-4px)' }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.transform='none' }}
-              >
-                <div style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'48px', fontWeight:700, color:'var(--gold)', opacity:0.22, lineHeight:1, marginBottom:'16px' }}>
-                  {String(i+1).padStart(2,'0')}
+              <Reveal key={i} delay={i*50}>
+                <div style={{ padding:'28px', background:'var(--bg-primary)', border:'1px solid var(--border)', borderRadius:'9px', transition:'all 0.25s', position:'relative', overflow:'hidden', height:'100%' }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.transform='translateY(-3px)' }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.transform='none' }}
+                >
+                  <div style={{ position:'absolute', top:0, left:0, width:'3px', height:'100%', background:'var(--gradient-btn)' }}/>
+                  <div style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'12px', color:'var(--text-muted)', letterSpacing:'2px', marginBottom:'12px', fontWeight:500, textTransform:'uppercase' }}>
+                    {String(i+1).padStart(2,'0')}
+                  </div>
+                  <h3 style={{ fontSize:'15px', fontWeight:600, color:'var(--text-primary)', marginBottom:'8px' }}>{w.title}</h3>
+                  <p style={{ fontSize:'13px', color:'var(--text-secondary)', lineHeight:1.75, fontWeight:300 }}>{w.desc}</p>
                 </div>
-                <h3 style={{ fontSize:'15.5px', fontWeight:600, color:'var(--text-primary)', marginBottom:'9px' }}>{w.title}</h3>
-                <p style={{ fontSize:'13.5px', color:'var(--text-secondary)', lineHeight:1.7, fontWeight:300 }}>{w.desc}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── ÉQUIPE / CTA ── */}
-      <section style={{ padding:'0 48px 80px', background:'var(--bg-secondary)' }}>
-        <div style={{ maxWidth:'1140px', margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'32px' }}>
-          <div style={{ background:'linear-gradient(135deg,var(--gold-bg),var(--bg-card))', border:'1px solid var(--border-gold)', borderRadius:'18px', padding:'44px' }}>
-            <div style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'32px', fontWeight:700, color:'var(--text-primary)', lineHeight:1.25, marginBottom:'16px' }}>
-              Prêt à Connecter<br/>votre Business<br/><span style={{ color:'var(--gold)' }}>au Monde ?</span>
-            </div>
-            <p style={{ fontSize:'14.5px', color:'var(--text-secondary)', lineHeight:1.8, fontWeight:300, marginBottom:'28px' }}>
-              Rejoignez les entreprises qui font confiance à IMEX HOLDING LTD pour leurs opérations commerciales et logistiques internationales.
-            </p>
-            <div style={{ display:'flex', gap:'12px', flexWrap:'wrap' }}>
-              <button onClick={() => navigate('/contact')}
-                style={{ background:'var(--gold)', color:'#070E1A', padding:'13px 28px', borderRadius:'9px', fontWeight:700, fontSize:'14px', border:'none', cursor:'pointer', fontFamily:'Outfit,sans-serif', transition:'all 0.2s' }}
-                onMouseEnter={e => e.currentTarget.style.background='var(--gold-light)'}
-                onMouseLeave={e => e.currentTarget.style.background='var(--gold)'}
-              >Nous Contacter</button>
-              <button onClick={() => navigate('/services')}
-                style={{ background:'transparent', color:'var(--gold)', padding:'13px 28px', borderRadius:'9px', fontWeight:500, fontSize:'14px', border:'1px solid var(--border-gold)', cursor:'pointer', fontFamily:'Outfit,sans-serif', transition:'all 0.2s' }}
-                onMouseEnter={e => e.currentTarget.style.background='var(--gold-bg)'}
-                onMouseLeave={e => e.currentTarget.style.background='transparent'}
-              >Nos Services</button>
-            </div>
-          </div>
-          <div style={{ display:'grid', gap:'14px' }}>
-            <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:'14px', padding:'24px' }}>
-              <div style={{ fontSize:'11px', letterSpacing:'2px', textTransform:'uppercase', color:'var(--text-muted)', marginBottom:'10px' }}>Siège Social</div>
-              <div style={{ fontSize:'15px', color:'var(--text-primary)', fontWeight:500 }}>Banjul, The Gambia</div>
-              <div style={{ fontSize:'13.5px', color:'var(--text-secondary)', marginTop:'4px', fontWeight:300 }}>West Africa</div>
-            </div>
-            <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:'14px', padding:'24px' }}>
-              <div style={{ fontSize:'11px', letterSpacing:'2px', textTransform:'uppercase', color:'var(--text-muted)', marginBottom:'10px' }}>Contact Direct</div>
-              <div style={{ fontSize:'15px', color:'var(--text-primary)', fontWeight:500 }}>+220 559 1066</div>
-              <div style={{ fontSize:'13.5px', color:'var(--text-secondary)', marginTop:'4px', fontWeight:300 }}>imexholding1@gmail.com</div>
-            </div>
-            <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:'14px', padding:'24px' }}>
-              <div style={{ fontSize:'11px', letterSpacing:'2px', textTransform:'uppercase', color:'var(--text-muted)', marginBottom:'10px' }}>Zones de Couverture</div>
-              <div style={{ display:'flex', gap:'8px', flexWrap:'wrap', marginTop:'4px' }}>
-                {a.regions.map(r => (
-                  <span key={r} style={{ background:'var(--gold-bg)', border:'1px solid var(--border-gold)', color:'var(--gold)', fontSize:'12px', padding:'4px 12px', borderRadius:'20px' }}>{r}</span>
-                ))}
+      {/* REGIONS + CTA */}
+      <section style={{ padding:'88px 48px', background:'var(--bg-primary)' }}>
+        <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+          <Reveal>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'24px' }}>
+              {/* Regions */}
+              <div style={{ background:'var(--bg-secondary)', border:'1px solid var(--border)', borderRadius:'10px', padding:'40px' }}>
+                <OL>{a.serveLabel}</OL>
+                <h3 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'28px', fontWeight:700, color:'var(--text-primary)', marginBottom:'24px' }}>Geographic Coverage</h3>
+                <div style={{ display:'grid', gap:'10px' }}>
+                  {a.regions.map((r,i) => (
+                    <div key={i} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 18px', background:'var(--bg-primary)', border:'1px solid var(--border)', borderRadius:'7px', fontSize:'14.5px', color:'var(--text-primary)', fontWeight:400, transition:'all 0.2s' }}
+                      onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.background='var(--accent-bg)' }}
+                      onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.background='var(--bg-primary)' }}
+                    >
+                      <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
+                        <div style={{ width:'5px', height:'5px', borderRadius:'50%', background:'var(--accent)' }}/>
+                        {r}
+                      </div>
+                      <ArrowRight/>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div style={{ background:'var(--bg-secondary)', border:'1px solid var(--border-accent)', borderRadius:'10px', padding:'40px', position:'relative', overflow:'hidden' }}>
+                <div style={{ position:'absolute', top:0, left:0, right:0, height:'3px', background:'var(--gradient-btn)' }}/>
+                <div style={{ position:'absolute', top:'-60px', right:'-60px', width:'250px', height:'250px', borderRadius:'50%', background:'radial-gradient(circle,var(--glow) 0%,transparent 65%)', pointerEvents:'none' }}/>
+                <div style={{ position:'relative', zIndex:1 }}>
+                  <OL>Ready to Work Together?</OL>
+                  <h3 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'30px', fontWeight:700, color:'var(--text-primary)', marginBottom:'14px', lineHeight:1.2 }}>
+                    Let's Build a Partnership
+                  </h3>
+                  <p style={{ fontSize:'14.5px', color:'var(--text-secondary)', lineHeight:1.85, fontWeight:300, marginBottom:'28px' }}>
+                    Whether you're looking for a reliable trade partner, logistics solutions, or brand representation in West Africa — we're here to help.
+                  </p>
+                  <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
+                    <button onClick={() => navigate('/contact')}
+                      style={{ padding:'13px', borderRadius:'7px', background:'var(--gradient-btn)', color:'#fff', fontWeight:600, fontSize:'14px', border:'none', cursor:'pointer', fontFamily:'Inter,sans-serif', transition:'all 0.25s', boxShadow:'var(--shadow-accent)', display:'flex', alignItems:'center', justifyContent:'center', gap:'8px' }}
+                      onMouseEnter={e => { e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow='0 14px 36px rgba(59,130,246,0.42)' }}
+                      onMouseLeave={e => { e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow='var(--shadow-accent)' }}
+                    >
+                      Contact Us <ArrowRight/>
+                    </button>
+                    <button onClick={() => navigate('/services')}
+                      style={{ padding:'12px', borderRadius:'7px', background:'transparent', color:'var(--text-primary)', fontWeight:500, fontSize:'14px', border:'1px solid var(--border)', cursor:'pointer', fontFamily:'Inter,sans-serif', transition:'all 0.25s' }}
+                      onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.color='var(--accent)'; e.currentTarget.style.background='var(--accent-bg)' }}
+                      onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.color='var(--text-primary)'; e.currentTarget.style.background='transparent' }}
+                    >
+                      Our Services
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
