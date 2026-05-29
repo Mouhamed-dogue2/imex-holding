@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── DARK MODE (défaut) ── */
+:root, [data-theme="dark"] {
+  --bg-primary:    #070E1A;
+  --bg-secondary:  #0C1525;
+  --bg-card:       rgba(255,255,255,0.04);
+  --bg-card-hover: rgba(201,168,76,0.07);
+  --border:        rgba(255,255,255,0.08);
+  --border-gold:   rgba(201,168,76,0.22);
+  --text-primary:  #ffffff;
+  --text-secondary:rgba(255,255,255,0.55);
+  --text-muted:    rgba(255,255,255,0.28);
+  --gold:          #C9A84C;
+  --gold-light:    #E8C96A;
+  --gold-bg:       rgba(201,168,76,0.10);
+  --nav-bg:        rgba(7,14,26,0.94);
+  --card-bg:       #0C1525;
+  --hero-grid:     rgba(201,168,76,0.04);
+}
+
+/* ── LIGHT MODE ── */
+[data-theme="light"] {
+  --bg-primary:    #F5F3EE;
+  --bg-secondary:  #FFFFFF;
+  --bg-card:       rgba(0,0,0,0.03);
+  --bg-card-hover: rgba(201,168,76,0.08);
+  --border:        rgba(0,0,0,0.09);
+  --border-gold:   rgba(180,140,40,0.30);
+  --text-primary:  #0D1520;
+  --text-secondary:#3D4A5C;
+  --text-muted:    #8A9AB0;
+  --gold:          #A07828;
+  --gold-light:    #C9A84C;
+  --gold-bg:       rgba(180,140,40,0.09);
+  --nav-bg:        rgba(245,243,238,0.96);
+  --card-bg:       #FFFFFF;
+  --hero-grid:     rgba(180,140,40,0.05);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+
+::selection { background: var(--gold); color: #070E1A; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border-gold); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
