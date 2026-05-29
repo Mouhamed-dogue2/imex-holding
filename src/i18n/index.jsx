@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 // src/i18n/index.jsx
 import { createContext, useContext, useState, useEffect } from 'react'
 import fr from './fr'
@@ -6,10 +5,10 @@ import en from './en'
 import es from './es'
 
 const translations = { fr, en, es }
-const LangContext = createContext(null)
+export const LangContext = createContext(null)
 
 export function LangProvider({ children }) {
-  const [lang, setLang] = useState('fr')
+  const [lang, setLang] = useState('en')
   const [dark, setDark] = useState(true)
 
   useEffect(() => {
