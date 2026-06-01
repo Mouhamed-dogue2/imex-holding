@@ -41,16 +41,22 @@ export default function Navbar() {
   return (
     <header style={{ position:'sticky', top:0, zIndex:100 }}>
 
-      {/* TOP BAR */}
+      {/* ── TOP BAR ── */}
       <div style={{
         background: dark ? '#020508' : '#E8EEF8',
         borderBottom: '1px solid var(--border)',
         padding: '6px 0',
       }}>
-        <div style={{ maxWidth:'1240px', margin:'0 auto', padding:'0 48px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+        <div style={{
+          maxWidth:'1240px', margin:'0 auto',
+          padding:'0 48px',
+          display:'flex', justifyContent:'space-between', alignItems:'center',
+        }}>
           <div style={{ display:'flex', gap:'28px', alignItems:'center' }}>
             {['+220 559 1066', '+220 796 5656', 'imexholding1@gmail.com', 'Banjul, The Gambia'].map((v,i) => (
-              <span key={i} style={{ fontSize:'11.5px', color:'var(--text-muted)', fontWeight:300, letterSpacing:'0.2px' }}>{v}</span>
+              <span key={i} style={{ fontSize:'11.5px', color:'var(--text-muted)', fontWeight:300, letterSpacing:'0.2px' }}>
+                {v}
+              </span>
             ))}
           </div>
           <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
@@ -62,7 +68,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* MAIN NAV */}
+      {/* ── MAIN NAV ── */}
       <nav style={{
         background: 'var(--nav-bg)',
         backdropFilter: 'blur(24px)',
@@ -74,12 +80,13 @@ export default function Navbar() {
         transition: 'box-shadow 0.3s',
       }}>
         <div style={{
-          maxWidth:'1240px', margin:'0 auto', padding:'0 48px',
-          height:'76px', display:'flex', alignItems:'center',
+          maxWidth:'1240px', margin:'0 auto',
+          padding:'0 48px', height:'76px',
+          display:'flex', alignItems:'center',
           justifyContent:'space-between', gap:'24px',
         }}>
 
-          {/* ── LOGO ── */}
+          {/* ── LOGO — un seul, visible partout ── */}
           <button
             onClick={() => navigate('/')}
             style={{ background:'none', border:'none', cursor:'pointer', padding:0, flexShrink:0 }}
@@ -93,7 +100,7 @@ export default function Navbar() {
                 display:'flex',
                 alignItems:'center',
                 justifyContent:'center',
-                minWidth:'160px',
+                minWidth:'150px',
                 boxShadow: dark
                   ? '0 2px 20px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.12)'
                   : '0 2px 14px rgba(15,40,100,0.14)',
@@ -120,19 +127,24 @@ export default function Navbar() {
                   width:'auto',
                   objectFit:'contain',
                   display:'block',
-                  maxWidth:'180px',
+                  maxWidth:'170px',
                 }}
               />
             </div>
           </button>
 
-          {/* ── NAV LINKS ── */}
-          <div className="desktop-nav" style={{ display:'flex', alignItems:'center', gap:'2px' }}>
+          {/* ── NAV LINKS desktop ── */}
+          <div
+            className="desktop-nav"
+            style={{ display:'flex', alignItems:'center', gap:'2px' }}
+          >
             {links.map(({ to, label }) => (
               <NavLink key={to} to={to} end={to==='/'}
                 style={({ isActive }) => ({
-                  position:'relative', fontSize:'13.5px', padding:'9px 18px',
-                  borderRadius:'7px', textDecoration:'none', letterSpacing:'0.2px',
+                  position:'relative',
+                  fontSize:'13.5px', padding:'9px 18px',
+                  borderRadius:'7px', textDecoration:'none',
+                  letterSpacing:'0.2px',
                   fontWeight: isActive ? 500 : 400,
                   color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
                   background: isActive ? 'var(--accent-bg)' : 'transparent',
@@ -150,17 +162,21 @@ export default function Navbar() {
                     e.currentTarget.style.background = 'transparent'
                   }
                 }}
-              >{label}</NavLink>
+              >
+                {label}
+              </NavLink>
             ))}
           </div>
 
-          {/* ── RIGHT ── */}
-          <div className="desktop-right" style={{ display:'flex', alignItems:'center', gap:'10px', flexShrink:0 }}>
-
-            {/* Theme toggle */}
+          {/* ── DROITE desktop ── */}
+          <div
+            className="desktop-right"
+            style={{ display:'flex', alignItems:'center', gap:'10px', flexShrink:0 }}
+          >
+            {/* Theme */}
             <button
               onClick={() => setDark(!dark)}
-              title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+              title={dark ? 'Light mode' : 'Dark mode'}
               style={{
                 width:'40px', height:'40px', borderRadius:'8px',
                 background:'var(--bg-card)', border:'1px solid var(--border)',
@@ -182,16 +198,16 @@ export default function Navbar() {
               {dark ? <IconSun/> : <IconMoon/>}
             </button>
 
-            {/* Contact CTA */}
+            {/* Contact */}
             <button
               onClick={() => navigate('/contact')}
               style={{
                 padding:'11px 24px', borderRadius:'8px',
-                background:'var(--gradient-btn)',
-                color:'#fff', fontWeight:600, fontSize:'13.5px',
-                border:'none', cursor:'pointer',
-                fontFamily:'Inter,sans-serif', letterSpacing:'0.3px',
-                transition:'all 0.25s', boxShadow:'var(--shadow-accent)',
+                background:'var(--gradient-btn)', color:'#fff',
+                fontWeight:600, fontSize:'13.5px', border:'none',
+                cursor:'pointer', fontFamily:'Inter,sans-serif',
+                letterSpacing:'0.3px', transition:'all 0.25s',
+                boxShadow:'var(--shadow-accent)',
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.transform = 'translateY(-2px)'
@@ -206,30 +222,19 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* ── MOBILE ── */}
-          <div className="mobile-cta" style={{ display:'none', alignItems:'center', gap:'8px' }}>
-
-            {/* Logo mobile — visible et lisible */}
-            <div style={{
-              height:'48px', padding:'5px 12px',
-              background:'#FFFFFF', borderRadius:'9px',
-              display:'flex', alignItems:'center', justifyContent:'center',
-              boxShadow:'0 2px 12px rgba(0,0,0,0.20)',
-              marginRight:'4px',
-            }}>
-              <img
-                src="/images/logo.png"
-                alt="IMEX HOLDING"
-                style={{ height:'36px', width:'auto', objectFit:'contain', display:'block', maxWidth:'130px' }}
-              />
-            </div>
-
+          {/* ── MOBILE — burger uniquement, pas de 2e logo ── */}
+          <div
+            className="mobile-cta"
+            style={{ display:'none', alignItems:'center', gap:'8px' }}
+          >
             <button
               onClick={() => navigate('/contact')}
               style={{
                 background:'var(--gradient-btn)', color:'#fff',
                 padding:'9px 16px', borderRadius:'8px',
-                fontWeight:600, fontSize:'13px', border:'none', cursor:'pointer',
+                fontWeight:600, fontSize:'13px',
+                border:'none', cursor:'pointer',
+                fontFamily:'Inter,sans-serif',
               }}
             >
               Contact
@@ -238,17 +243,22 @@ export default function Navbar() {
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               style={{
-                background:'var(--bg-card)', border:'1px solid var(--border)',
-                borderRadius:'8px', cursor:'pointer', padding:'10px',
-                display:'flex', flexDirection:'column', gap:'4px', alignItems:'center',
+                background:'var(--bg-card)',
+                border:'1px solid var(--border)',
+                borderRadius:'8px', cursor:'pointer',
+                padding:'10px', display:'flex',
+                flexDirection:'column', gap:'4px', alignItems:'center',
               }}
             >
               {[0,1,2].map(i => (
                 <span key={i} style={{
                   display:'block', width:'20px', height:'1.5px',
-                  background:'var(--text-primary)', borderRadius:'2px', transition:'all 0.3s',
+                  background:'var(--text-primary)', borderRadius:'2px',
+                  transition:'all 0.3s',
                   transform: mobileOpen
-                    ? (i===0 ? 'translateY(5.5px) rotate(45deg)' : i===2 ? 'translateY(-5.5px) rotate(-45deg)' : 'none')
+                    ? (i===0 ? 'translateY(5.5px) rotate(45deg)'
+                      : i===2 ? 'translateY(-5.5px) rotate(-45deg)'
+                      : 'none')
                     : 'none',
                   opacity: mobileOpen && i===1 ? 0 : 1,
                 }}/>
@@ -264,26 +274,37 @@ export default function Navbar() {
           transition:'max-height 0.4s ease',
           borderTop: mobileOpen ? '1px solid var(--border)' : 'none',
         }}>
-          <div style={{ padding:'16px 24px 24px', display:'flex', flexDirection:'column', gap:'4px' }}>
+          <div style={{
+            padding:'16px 20px 24px',
+            display:'flex', flexDirection:'column', gap:'4px',
+          }}>
             {links.map(({ to, label }) => (
-              <NavLink key={to} to={to} end={to==='/'} onClick={() => setMobileOpen(false)}
+              <NavLink
+                key={to} to={to} end={to=='/'}
+                onClick={() => setMobileOpen(false)}
                 style={({ isActive }) => ({
-                  padding:'13px 16px', borderRadius:'8px',
+                  padding:'14px 16px', borderRadius:'8px',
                   textDecoration:'none', fontSize:'15px',
                   fontWeight: isActive ? 500 : 400,
                   color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
                   background: isActive ? 'var(--accent-bg)' : 'transparent',
                 })}
-              >{label}</NavLink>
+              >
+                {label}
+              </NavLink>
             ))}
+
+            {/* Theme toggle dans menu mobile */}
             <button
               onClick={() => setDark(!dark)}
               style={{
-                marginTop:'12px', padding:'11px 16px', borderRadius:'8px',
-                background:'var(--bg-card)', border:'1px solid var(--border)',
+                marginTop:'12px', padding:'13px 16px',
+                borderRadius:'8px', background:'var(--bg-card)',
+                border:'1px solid var(--border)',
                 color:'var(--text-secondary)', cursor:'pointer',
-                fontFamily:'Inter,sans-serif', fontSize:'13.5px',
-                display:'flex', alignItems:'center', gap:'8px',
+                fontFamily:'Inter,sans-serif', fontSize:'14px',
+                display:'flex', alignItems:'center', gap:'10px',
+                width:'100%',
               }}
             >
               {dark ? <><IconSun/> Light mode</> : <><IconMoon/> Dark mode</>}

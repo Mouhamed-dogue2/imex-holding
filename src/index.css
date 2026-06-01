@@ -4,6 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ══════════════════════════════════
+   DARK MODE
+══════════════════════════════════ */
 :root, [data-theme="dark"] {
   --bg-primary:     #04080F;
   --bg-secondary:   #070D18;
@@ -27,6 +30,9 @@
   --shadow-accent:  0 8px 28px rgba(59,130,246,0.22);
 }
 
+/* ══════════════════════════════════
+   LIGHT MODE
+══════════════════════════════════ */
 [data-theme="light"] {
   --bg-primary:     #F7F9FC;
   --bg-secondary:   #FFFFFF;
@@ -50,6 +56,7 @@
   --shadow-accent:  0 8px 28px rgba(29,78,216,0.18);
 }
 
+/* ══ BASE ══ */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body {
@@ -66,132 +73,10 @@ body {
 ::-webkit-scrollbar-thumb { background:rgba(59,130,246,0.3); border-radius:2px; }
 ::-webkit-scrollbar-thumb:hover { background:var(--accent); }
 
+/* ══ ANIMATIONS ══ */
 @keyframes fadeUp   { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 @keyframes fadeDown { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:translateY(0)} }
 @keyframes fadeLeft { from{opacity:0;transform:translateX(24px)} to{opacity:1;transform:translateX(0)} }
 @keyframes pulse    { 0%,100%{opacity:1} 50%{opacity:0.45} }
 @keyframes gradMove { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
 @keyframes spin     { to{transform:rotate(360deg)} }
-
-/* ══════════════════════════════════
-   RESPONSIVE — MOBILE FIRST
-══════════════════════════════════ */
-
-/* Desktop nav hidden on mobile */
-@media (max-width:900px) {
-  .desktop-nav,.desktop-right { display:none !important; }
-  .mobile-cta { display:flex !important; }
-  header>div:first-child { display:none !important; }
-}
-
-/* ── TABLET ── */
-@media (max-width:768px) {
-
-  /* Sections padding */
-  section {
-    padding-left:  20px !important;
-    padding-right: 20px !important;
-  }
-
-  /* Typography */
-  h1 { font-size: clamp(28px,7vw,44px) !important; line-height:1.1 !important; }
-  h2 { font-size: clamp(24px,6vw,36px) !important; }
-  h3 { font-size: clamp(16px,4vw,22px) !important; }
-
-  /* Toutes les grilles 2 colonnes → 1 colonne */
-  [style*="grid-template-columns: 1fr 1fr"],
-  [style*="grid-template-columns: 1fr 1.5fr"],
-  [style*="grid-template-columns: 1fr 1.4fr"],
-  [style*="grid-template-columns: 1fr 1.3fr"],
-  [style*="grid-template-columns: 2fr 1fr"],
-  [style*="grid-template-columns: 1fr 2fr"],
-  [style*="grid-template-columns: 1.05fr 0.95fr"],
-  [style*="grid-template-columns: 1.1fr 0.9fr"] {
-    grid-template-columns: 1fr !important;
-    gap: 24px !important;
-  }
-
-  /* Grilles 3 colonnes → 1 */
-  [style*="grid-template-columns: repeat(3,1fr)"],
-  [style*="grid-template-columns: repeat(3, 1fr)"] {
-    grid-template-columns: 1fr !important;
-    gap: 16px !important;
-  }
-
-  /* Grilles 4 colonnes → 2 */
-  [style*="grid-template-columns: repeat(4,1fr)"],
-  [style*="grid-template-columns: 2fr 1fr 1fr 1fr"],
-  [style*="grid-template-columns: 1fr 1fr 1fr 1fr"] {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 12px !important;
-  }
-
-  /* Paddings verticaux */
-  [style*="padding: 88px 48px"] { padding: 48px 20px !important; }
-  [style*="padding: 80px 48px"] { padding: 48px 20px !important; }
-  [style*="padding: 72px 48px"] { padding: 44px 20px !important; }
-  [style*="padding: 60px 48px"] { padding: 40px 20px !important; }
-  [style*="padding: 52px 44px"] { padding: 32px 20px !important; }
-  [style*="padding: 0 48px 80px"] { padding: 0 20px 48px !important; }
-  [style*="padding: 0 48px 88px"] { padding: 0 20px 48px !important; }
-
-  /* Hero min-height */
-  [style*="min-height: 90vh"],
-  [style*="min-height: 92vh"] {
-    min-height: auto !important;
-    padding-top: 52px !important;
-    padding-bottom: 52px !important;
-  }
-
-  /* Images */
-  img[style*="height: 400px"],
-  img[style*="height: 480px"],
-  img[style*="height: 360px"] {
-    height: 220px !important;
-  }
-  img[style*="height: 280px"],
-  img[style*="height: 300px"] {
-    height: 200px !important;
-  }
-}
-
-/* ── MOBILE ── */
-@media (max-width:480px) {
-
-  /* Toutes grilles → 1 colonne sur petit écran */
-  [style*="grid-template-columns: 1fr 1fr"],
-  [style*="grid-template-columns: repeat(4"],
-  [style*="grid-template-columns: 2fr 1fr 1fr 1fr"] {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
-  }
-
-  h1 { font-size: clamp(26px,8vw,36px) !important; }
-  h2 { font-size: clamp(22px,7vw,30px) !important; }
-
-  /* Nav */
-  [style*="padding: 0 48px"] {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-
-  /* Stats flex → wrap */
-  [style*="display: flex"][style*="gap: 44px"],
-  [style*="display: flex"][style*="gap: 48px"] {
-    gap: 20px !important;
-    flex-wrap: wrap !important;
-  }
-
-  /* Buttons full width */
-  [style*="padding: 13px 30px"],
-  [style*="padding: 13px 28px"],
-  [style*="padding: 14px 32px"] {
-    width: 100% !important;
-    justify-content: center !important;
-  }
-
-  /* CTA grid → stack */
-  [style*="grid-template-columns: 1fr 1fr"][style*="border-right"] {
-    grid-template-columns: 1fr !important;
-  }
-}
