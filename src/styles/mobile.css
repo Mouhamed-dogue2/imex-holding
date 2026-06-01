@@ -293,3 +293,37 @@
     max-width: 100px !important;
   }
 }
+/* ── Logo navbar mobile ── */
+@media (max-width:900px) {
+  .desktop-logo { display: none !important; }
+  .mobile-logo  { display: block !important; }
+}
+
+@media (min-width:901px) {
+  .mobile-logo  { display: none !important; }
+  .desktop-logo { display: block !important; }
+}
+
+/* ── Footer logo mobile ── */
+@media (max-width:480px) {
+  footer [style*="height: 52px"] {
+    height: 44px !important;
+    padding: 5px 10px !important;
+  }
+  footer [style*="height: 52px"] img {
+    height: 32px !important;
+    max-width: 120px !important;
+  }
+
+  footer [style*="grid-template-columns: 2fr 1fr 1fr 1fr"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px !important;
+  }
+}
+
+@media (max-width:360px) {
+  footer [style*="height: 52px"] img {
+    height: 28px !important;
+    max-width: 100px !important;
+  }
+}

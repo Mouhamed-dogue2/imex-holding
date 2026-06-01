@@ -2,54 +2,42 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from '../i18n/index.jsx'
 
 export default function Footer() {
-  const { t } = useTranslation()
+  const { t, dark } = useTranslation()
   const navigate = useNavigate()
   if (!t?.footer) return null
   const f = t.footer
 
   return (
-    <footer style={{ background:'var(--bg-secondary)', borderTop:'1px solid var(--border)', padding:'60px 48px 28px' }}>
+    <footer style={{ background:'var(--bg-secondary)', borderTop:'1px solid var(--border)', padding:'56px 48px 28px' }}>
       <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
-        <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:'48px', marginBottom:'48px' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:'40px', marginBottom:'44px' }}>
 
           {/* ── BRAND ── */}
           <div>
             <button
               onClick={() => navigate('/')}
-              style={{ background:'none', border:'none', cursor:'pointer', padding:0, marginBottom:'20px', display:'block' }}
+              style={{ background:'none', border:'none', cursor:'pointer', padding:0, marginBottom:'18px', display:'block' }}
             >
-              <div
-                style={{
-                  height:'58px',
-                  padding:'7px 16px',
-                  background:'#FFFFFF',
-                  borderRadius:'10px',
-                  display:'inline-flex',
-                  alignItems:'center',
-                  justifyContent:'center',
-                  minWidth:'160px',
-                  boxShadow:'0 2px 16px rgba(0,0,0,0.14)',
-                  transition:'all 0.25s',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.transform = 'translateY(-1px)'
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(59,130,246,0.22)'
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.transform = 'none'
-                  e.currentTarget.style.boxShadow = '0 2px 16px rgba(0,0,0,0.14)'
-                }}
+              <div style={{
+                height:'52px',
+                padding:'6px 12px',
+                background:'#FFFFFF',
+                borderRadius:'9px',
+                display:'inline-flex',
+                alignItems:'center',
+                justifyContent:'center',
+                boxShadow: dark
+                  ? '0 2px 16px rgba(0,0,0,0.45)'
+                  : '0 2px 12px rgba(15,40,100,0.12)',
+                transition:'all 0.25s',
+              }}
+                onMouseEnter={e => { e.currentTarget.style.transform='translateY(-1px)'; e.currentTarget.style.boxShadow='0 6px 20px rgba(59,130,246,0.20)' }}
+                onMouseLeave={e => { e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow=dark?'0 2px 16px rgba(0,0,0,0.45)':'0 2px 12px rgba(15,40,100,0.12)' }}
               >
                 <img
                   src="/images/logo.png"
                   alt="IMEX HOLDING LIMITED"
-                  style={{
-                    height:'44px',
-                    width:'auto',
-                    objectFit:'contain',
-                    display:'block',
-                    maxWidth:'180px',
-                  }}
+                  style={{ height:'38px', width:'auto', objectFit:'contain', display:'block', maxWidth:'150px' }}
                 />
               </div>
             </button>
@@ -65,23 +53,19 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* ── COLUMNS ── */}
+          {/* ── COLONNES ── */}
           {[
             { title:f.company,     items:f.links1,  routes:['/about','/about','/about','/about'] },
             { title:f.servicesCol, items:f.links2,  routes:['/services','/services','/services','/logistics'] },
             { title:f.contactCol,  items:['+220 559 1066','+220 796 5656','imexholding1@gmail.com','Banjul, The Gambia'], routes:['#','#','#','#'] },
           ].map((col,ci) => (
             <div key={ci}>
-              <h4 style={{
-                fontSize:'10.5px', letterSpacing:'2.5px',
-                textTransform:'uppercase', color:'var(--text-muted)',
-                marginBottom:'18px', fontWeight:500,
-              }}>
+              <h4 style={{ fontSize:'10.5px', letterSpacing:'2.5px', textTransform:'uppercase', color:'var(--text-muted)', marginBottom:'16px', fontWeight:500 }}>
                 {col.title}
               </h4>
               <ul style={{ listStyle:'none' }}>
                 {col.items.map((item,ii) => (
-                  <li key={ii} style={{ marginBottom:'11px' }}>
+                  <li key={ii} style={{ marginBottom:'10px' }}>
                     <button
                       onClick={() => col.routes[ii] !== '#' && navigate(col.routes[ii])}
                       style={{
@@ -103,11 +87,11 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* ── BOTTOM BAR ── */}
+        {/* ── BOTTOM ── */}
         <div style={{
           borderTop:'1px solid var(--border)', paddingTop:'20px',
           display:'flex', justifyContent:'space-between',
-          alignItems:'center', flexWrap:'wrap', gap:'12px',
+          alignItems:'center', flexWrap:'wrap', gap:'10px',
         }}>
           <p style={{ fontSize:'12.5px', color:'var(--text-muted)' }}>
             © 2025 IMEX HOLDING LTD. {f.rights}
