@@ -87,47 +87,41 @@ export default function Navbar() {
         }}>
 
           {/* ── LOGO — un seul, visible partout ── */}
+          {/* ── LOGO ── */}
           <button
             onClick={() => navigate('/')}
             style={{ background:'none', border:'none', cursor:'pointer', padding:0, flexShrink:0 }}
           >
             <div
               style={{
-                height:'58px',
-                padding:'7px 16px',
+                height:'52px',
+                padding:'6px 14px',
                 background:'#FFFFFF',
                 borderRadius:'10px',
                 display:'flex',
                 alignItems:'center',
                 justifyContent:'center',
-                minWidth:'150px',
                 boxShadow: dark
-                  ? '0 2px 20px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.12)'
+                  ? '0 2px 20px rgba(0,0,0,0.55)'
                   : '0 2px 14px rgba(15,40,100,0.14)',
                 transition:'all 0.25s',
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.transform = 'translateY(-1px)'
-                e.currentTarget.style.boxShadow = dark
-                  ? '0 8px 32px rgba(59,130,246,0.35), 0 0 0 1px rgba(255,255,255,0.18)'
-                  : '0 8px 24px rgba(29,78,216,0.20)'
               }}
               onMouseLeave={e => {
                 e.currentTarget.style.transform = 'none'
-                e.currentTarget.style.boxShadow = dark
-                  ? '0 2px 20px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.12)'
-                  : '0 2px 14px rgba(15,40,100,0.14)'
               }}
             >
               <img
                 src="/images/logo.png"
                 alt="IMEX HOLDING LIMITED"
                 style={{
-                  height:'44px',
+                  height:'38px',
                   width:'auto',
                   objectFit:'contain',
                   display:'block',
-                  maxWidth:'170px',
+                  maxWidth:'140px',
                 }}
               />
             </div>

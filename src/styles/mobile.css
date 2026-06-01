@@ -260,3 +260,36 @@
     padding-right: 12px !important;
   }
 }
+@media (max-width:768px) {
+  /* Logo navbar mobile */
+  header nav button > div {
+    height: 44px !important;
+    padding: 5px 10px !important;
+    min-width: unset !important;
+  }
+
+  header nav button > div img {
+    height: 32px !important;
+    max-width: 110px !important;
+  }
+
+  /* Nav height réduite sur mobile */
+  header nav > div > div[style*="height: 76px"],
+  header nav > div > div[style*="height: 72px"] {
+    height: 60px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+}
+
+@media (max-width:480px) {
+  header nav button > div {
+    height: 40px !important;
+    padding: 4px 8px !important;
+  }
+
+  header nav button > div img {
+    height: 28px !important;
+    max-width: 100px !important;
+  }
+}
