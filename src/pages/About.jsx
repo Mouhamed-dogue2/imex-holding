@@ -92,7 +92,7 @@ export default function About() {
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'72px', alignItems:'center' }}>
               <div>
                 <img
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=700&q=80"
+                  src="/images/about1.jpg"
                   alt="IMEX HOLDING team"
                   style={{ width:'100%', height:'400px', objectFit:'cover', borderRadius:'12px', display:'block', border:'1px solid var(--border)' }}
                 />
@@ -145,7 +145,7 @@ export default function About() {
           <Reveal delay={100}>
             <div style={{ position:'relative', borderRadius:'12px', overflow:'hidden', border:'1px solid var(--border)' }}>
               <img
-                src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80"
+                src="/images/about2.jpg"
                 alt="International business operations"
                 style={{ width:'100%', height:'300px', objectFit:'cover', display:'block' }}
               />

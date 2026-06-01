@@ -73,20 +73,60 @@ export default function Navbar() {
           : 'none',
         transition: 'box-shadow 0.3s',
       }}>
-        <div style={{ maxWidth:'1240px', margin:'0 auto', padding:'0 48px', height:'72px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:'24px' }}>
+        <div style={{
+          maxWidth:'1240px', margin:'0 auto', padding:'0 48px',
+          height:'76px', display:'flex', alignItems:'center',
+          justifyContent:'space-between', gap:'24px',
+        }}>
 
-          {/* LOGO */}
-          <button onClick={() => navigate('/')} style={{ background:'none', border:'none', cursor:'pointer', padding:0, flexShrink:0 }}>
+          {/* ── LOGO ── */}
+          <button
+            onClick={() => navigate('/')}
+            style={{ background:'none', border:'none', cursor:'pointer', padding:0, flexShrink:0 }}
+          >
             <div
-              style={{ height:'46px', padding:'4px 10px', background:'#fff', borderRadius:'8px', display:'flex', alignItems:'center', boxShadow: dark ? '0 2px 16px rgba(0,0,0,0.45)' : '0 2px 10px rgba(15,40,100,0.10)', transition:'all 0.25s' }}
-              onMouseEnter={e => { e.currentTarget.style.transform='translateY(-1px)'; e.currentTarget.style.boxShadow=dark?'0 6px 24px rgba(59,130,246,0.28)':'0 6px 20px rgba(29,78,216,0.16)' }}
-              onMouseLeave={e => { e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow=dark?'0 2px 16px rgba(0,0,0,0.45)':'0 2px 10px rgba(15,40,100,0.10)' }}
+              style={{
+                height:'58px',
+                padding:'7px 16px',
+                background:'#FFFFFF',
+                borderRadius:'10px',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                minWidth:'160px',
+                boxShadow: dark
+                  ? '0 2px 20px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.12)'
+                  : '0 2px 14px rgba(15,40,100,0.14)',
+                transition:'all 0.25s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = 'translateY(-1px)'
+                e.currentTarget.style.boxShadow = dark
+                  ? '0 8px 32px rgba(59,130,246,0.35), 0 0 0 1px rgba(255,255,255,0.18)'
+                  : '0 8px 24px rgba(29,78,216,0.20)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = 'none'
+                e.currentTarget.style.boxShadow = dark
+                  ? '0 2px 20px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.12)'
+                  : '0 2px 14px rgba(15,40,100,0.14)'
+              }}
             >
-              <img src="/images/logo.png" alt="IMEX HOLDING LIMITED" style={{ height:'36px', width:'auto', objectFit:'contain', display:'block' }}/>
+              <img
+                src="/images/logo.png"
+                alt="IMEX HOLDING LIMITED"
+                style={{
+                  height:'44px',
+                  width:'auto',
+                  objectFit:'contain',
+                  display:'block',
+                  maxWidth:'180px',
+                }}
+              />
             </div>
           </button>
 
-          {/* LINKS */}
+          {/* ── NAV LINKS ── */}
           <div className="desktop-nav" style={{ display:'flex', alignItems:'center', gap:'2px' }}>
             {links.map(({ to, label }) => (
               <NavLink key={to} to={to} end={to==='/'}
@@ -114,50 +154,138 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* RIGHT */}
+          {/* ── RIGHT ── */}
           <div className="desktop-right" style={{ display:'flex', alignItems:'center', gap:'10px', flexShrink:0 }}>
 
-            {/* THEME */}
-            <button onClick={() => setDark(!dark)}
-              style={{ width:'38px', height:'38px', borderRadius:'8px', background:'var(--bg-card)', border:'1px solid var(--border)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', color:'var(--text-muted)', transition:'all 0.2s' }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.color='var(--accent)'; e.currentTarget.style.background='var(--accent-bg)' }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.color='var(--text-muted)'; e.currentTarget.style.background='var(--bg-card)' }}
+            {/* Theme toggle */}
+            <button
+              onClick={() => setDark(!dark)}
+              title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+              style={{
+                width:'40px', height:'40px', borderRadius:'8px',
+                background:'var(--bg-card)', border:'1px solid var(--border)',
+                cursor:'pointer', display:'flex', alignItems:'center',
+                justifyContent:'center', color:'var(--text-muted)',
+                transition:'all 0.2s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = 'var(--accent)'
+                e.currentTarget.style.color = 'var(--accent)'
+                e.currentTarget.style.background = 'var(--accent-bg)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = 'var(--border)'
+                e.currentTarget.style.color = 'var(--text-muted)'
+                e.currentTarget.style.background = 'var(--bg-card)'
+              }}
             >
               {dark ? <IconSun/> : <IconMoon/>}
             </button>
 
-            {/* CTA */}
-            <button onClick={() => navigate('/contact')}
-              style={{ padding:'10px 22px', borderRadius:'8px', background:'var(--gradient-btn)', backgroundSize:'200% 200%', color:'#fff', fontWeight:600, fontSize:'13.5px', border:'none', cursor:'pointer', fontFamily:'Inter,sans-serif', letterSpacing:'0.3px', transition:'all 0.25s', boxShadow:'var(--shadow-accent)' }}
-              onMouseEnter={e => { e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow='0 12px 32px rgba(59,130,246,0.40)' }}
-              onMouseLeave={e => { e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow='var(--shadow-accent)' }}
+            {/* Contact CTA */}
+            <button
+              onClick={() => navigate('/contact')}
+              style={{
+                padding:'11px 24px', borderRadius:'8px',
+                background:'var(--gradient-btn)',
+                color:'#fff', fontWeight:600, fontSize:'13.5px',
+                border:'none', cursor:'pointer',
+                fontFamily:'Inter,sans-serif', letterSpacing:'0.3px',
+                transition:'all 0.25s', boxShadow:'var(--shadow-accent)',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = 'translateY(-2px)'
+                e.currentTarget.style.boxShadow = '0 12px 32px rgba(59,130,246,0.40)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = 'none'
+                e.currentTarget.style.boxShadow = 'var(--shadow-accent)'
+              }}
             >
               Contact Us
             </button>
           </div>
 
-          {/* MOBILE */}
+          {/* ── MOBILE ── */}
           <div className="mobile-cta" style={{ display:'none', alignItems:'center', gap:'8px' }}>
-            <button onClick={() => navigate('/contact')} style={{ background:'var(--gradient-btn)', color:'#fff', padding:'9px 18px', borderRadius:'8px', fontWeight:600, fontSize:'13px', border:'none', cursor:'pointer' }}>Contact</button>
-            <button onClick={() => setMobileOpen(!mobileOpen)} style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:'8px', cursor:'pointer', padding:'10px', display:'flex', flexDirection:'column', gap:'4px', alignItems:'center' }}>
+
+            {/* Logo mobile — visible et lisible */}
+            <div style={{
+              height:'48px', padding:'5px 12px',
+              background:'#FFFFFF', borderRadius:'9px',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              boxShadow:'0 2px 12px rgba(0,0,0,0.20)',
+              marginRight:'4px',
+            }}>
+              <img
+                src="/images/logo.png"
+                alt="IMEX HOLDING"
+                style={{ height:'36px', width:'auto', objectFit:'contain', display:'block', maxWidth:'130px' }}
+              />
+            </div>
+
+            <button
+              onClick={() => navigate('/contact')}
+              style={{
+                background:'var(--gradient-btn)', color:'#fff',
+                padding:'9px 16px', borderRadius:'8px',
+                fontWeight:600, fontSize:'13px', border:'none', cursor:'pointer',
+              }}
+            >
+              Contact
+            </button>
+
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              style={{
+                background:'var(--bg-card)', border:'1px solid var(--border)',
+                borderRadius:'8px', cursor:'pointer', padding:'10px',
+                display:'flex', flexDirection:'column', gap:'4px', alignItems:'center',
+              }}
+            >
               {[0,1,2].map(i => (
-                <span key={i} style={{ display:'block', width:'20px', height:'1.5px', background:'var(--text-primary)', borderRadius:'2px', transition:'all 0.3s',
-                  transform: mobileOpen?(i===0?'translateY(5.5px) rotate(45deg)':i===2?'translateY(-5.5px) rotate(-45deg)':'none'):'none',
-                  opacity: mobileOpen&&i===1?0:1 }}/>
+                <span key={i} style={{
+                  display:'block', width:'20px', height:'1.5px',
+                  background:'var(--text-primary)', borderRadius:'2px', transition:'all 0.3s',
+                  transform: mobileOpen
+                    ? (i===0 ? 'translateY(5.5px) rotate(45deg)' : i===2 ? 'translateY(-5.5px) rotate(-45deg)' : 'none')
+                    : 'none',
+                  opacity: mobileOpen && i===1 ? 0 : 1,
+                }}/>
               ))}
             </button>
           </div>
         </div>
 
-        {/* MOBILE MENU */}
-        <div style={{ maxHeight:mobileOpen?'420px':'0', overflow:'hidden', transition:'max-height 0.4s ease', borderTop:mobileOpen?'1px solid var(--border)':'none' }}>
+        {/* ── MOBILE MENU ── */}
+        <div style={{
+          maxHeight: mobileOpen ? '460px' : '0',
+          overflow:'hidden',
+          transition:'max-height 0.4s ease',
+          borderTop: mobileOpen ? '1px solid var(--border)' : 'none',
+        }}>
           <div style={{ padding:'16px 24px 24px', display:'flex', flexDirection:'column', gap:'4px' }}>
             {links.map(({ to, label }) => (
               <NavLink key={to} to={to} end={to==='/'} onClick={() => setMobileOpen(false)}
-                style={({ isActive }) => ({ padding:'13px 16px', borderRadius:'8px', textDecoration:'none', fontSize:'15px', fontWeight:isActive?500:400, color:isActive?'var(--accent)':'var(--text-secondary)', background:isActive?'var(--accent-bg)':'transparent' })}
+                style={({ isActive }) => ({
+                  padding:'13px 16px', borderRadius:'8px',
+                  textDecoration:'none', fontSize:'15px',
+                  fontWeight: isActive ? 500 : 400,
+                  color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
+                  background: isActive ? 'var(--accent-bg)' : 'transparent',
+                })}
               >{label}</NavLink>
             ))}
-            <button onClick={() => setDark(!dark)} style={{ marginTop:'12px', padding:'11px 16px', borderRadius:'8px', background:'var(--bg-card)', border:'1px solid var(--border)', color:'var(--text-secondary)', cursor:'pointer', fontFamily:'Inter,sans-serif', fontSize:'13.5px', display:'flex', alignItems:'center', gap:'8px' }}>
+            <button
+              onClick={() => setDark(!dark)}
+              style={{
+                marginTop:'12px', padding:'11px 16px', borderRadius:'8px',
+                background:'var(--bg-card)', border:'1px solid var(--border)',
+                color:'var(--text-secondary)', cursor:'pointer',
+                fontFamily:'Inter,sans-serif', fontSize:'13.5px',
+                display:'flex', alignItems:'center', gap:'8px',
+              }}
+            >
               {dark ? <><IconSun/> Light mode</> : <><IconMoon/> Dark mode</>}
             </button>
           </div>

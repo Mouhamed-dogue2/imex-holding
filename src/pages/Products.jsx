@@ -51,9 +51,9 @@ const PROD_IMAGES = [
   // 04 Gold
   'https://images.unsplash.com/photo-1610375461246-83df859d849d?w=600&q=80',
   // 05 Diamonds
-  'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=600&q=80',
+  '/images/produit5.jpg', 
   // 06 Industrial
-  'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80',
+  '/images/produit6.jpg',
 ]
 
 const PROD_DETAILS = [

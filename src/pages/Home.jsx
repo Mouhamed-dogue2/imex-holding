@@ -128,7 +128,7 @@ export default function Home() {
             <DL/>
 
             <p style={{ fontSize:'15.5px', lineHeight:1.9, color:'var(--text-secondary)', maxWidth:'500px', marginBottom:'40px', fontWeight:300 }}>
-              IMEX HOLDING LTD is a West Africa–based company specialised in international trade, import-export, logistics, and brand representation — connecting businesses to markets across 4 continents.
+              IMEX HOLDING LTD is a West Africa–based company specialised in international trade, import-export, logistics, shipping and forwarding, and brand representation — connecting businesses to markets across 4 continents.
             </p>
 
             <div style={{ display:'flex', gap:'14px', flexWrap:'wrap' }}>
@@ -224,7 +224,7 @@ export default function Home() {
 
                 {/* Checklist — icône check minimaliste */}
                 <div style={{ display:'flex', flexDirection:'column', gap:'10px', marginBottom:'28px' }}>
-                  {['Import & Export', 'General Trading', 'Brand Representation', 'Transport & Logistics'].map((v,i) => (
+                  {['Import & Export', 'General Trading', 'Brand Representation', 'Transport & Logistics', 'Shipping & Forwarding'].map((v, i) => (
                     <div key={i} style={{ display:'flex', alignItems:'center', gap:'10px', fontSize:'14px', color:'var(--text-secondary)', fontWeight:400 }}>
                       <div style={{ color:'var(--accent)', flexShrink:0 }}><CheckIcon/></div>
                       {v}

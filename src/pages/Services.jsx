@@ -205,7 +205,7 @@ export default function Services() {
               </div>
               <div>
                 <img
-                    src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=700&q=80"
+                    src="/images/service1.jpg"
                     alt="Professional logistics team"
                     style={{ width:'100%', height:'480px', objectFit:'cover', borderRadius:'12px', display:'block', border:'1px solid var(--border)' }}
                 />
