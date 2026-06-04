@@ -64,7 +64,7 @@ export default function Contact() {
 
             <div style={{ display:'flex', flexDirection:'column', gap:'0', border:'1px solid var(--border)', borderRadius:'9px', overflow:'hidden', marginBottom:'24px' }}>
               {[
-                { label:'Phone',   vals:['+220 559 1066', '+220 796 5656'] },
+                { label:'Phone',   vals:['+220 559 1066'] },
                 { label:'Email',   vals:['imexholding1@gmail.com'] },
                 { label:'WhatsApp',vals:['+220 559 1066'] },
                 { label:'Address', vals:['Banjul, The Gambia', 'West Africa'] },
