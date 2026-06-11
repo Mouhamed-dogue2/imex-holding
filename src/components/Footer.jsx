@@ -57,7 +57,7 @@ export default function Footer() {
           {[
             { title:f.company,     items:f.links1,  routes:['/about','/about','/about','/about'] },
             { title:f.servicesCol, items:f.links2,  routes:['/services','/services','/services','/logistics'] },
-            { title:f.contactCol,  items:['+220 559 1066','+220 796 5656','imexholding1@gmail.com','Banjul, The Gambia'], routes:['#','#','#','#'] },
+            { title:f.contactCol,  items:['+220 559 1066','imexholding1@gmail.com','Banjul, The Gambia'], routes:['#','#','#','#'] },
           ].map((col,ci) => (
             <div key={ci}>
               <h4 style={{ fontSize:'10.5px', letterSpacing:'2.5px', textTransform:'uppercase', color:'var(--text-muted)', marginBottom:'16px', fontWeight:500 }}>
